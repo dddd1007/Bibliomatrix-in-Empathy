@@ -1,0 +1,39 @@
+---
+title: "医疗场景中共情的文献计量学研究"
+output: html_notebook
+---
+# Introduction
+
+本研究旨在使用文献计量学方法，对医疗场景中共情能力的有关文献进行梳理。研究使用R语言的Bibliometrix包进行分析。
+
+# 1.准备工作
+
+## 1. 文献的检索
+
+本文中处理的文献来源于WoK搜索引擎，使用主题搜索，关键词为“medical empathy”。为了确保搜索的有效性，选择几个相关领域的重要研究者作为校标，确保检索结果中确实存在上述研究者。
+
+搜索结果包括条目1023条，将相关条目通过BibTex格式导出，得到收集到的初步资料。随后使用Bibliomatrix包进行处理分析。
+
+## 2. 数据的导入
+
+```{r 载入package}
+library("bibliometrix")
+```
+
+```{r 读取数据并合并}
+filename <- dir("Material/medical")
+setwd("Material/medical") #进入分析材料的路径
+material <- character()
+
+for (i in 1 : length(filename)) {
+ temp_read <- readLines(filename[i])
+ material <- c(material, temp_read)
+}
+
+setwd("../../") #返回原工作路径
+```
+
+```{r 转换为数据框}
+empathy <- convert2df(material, dbsource = "isi", format = "bibtex")
+```
+
